@@ -73,3 +73,6 @@ source/downloads/stars_and_galaxies.csv
 
 # environment
 pyvenv.cfg
+
+# don't want to take the cache with us
+src/cached
