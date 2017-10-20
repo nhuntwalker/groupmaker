@@ -44,7 +44,9 @@ def choose_pairs(student_list, filepath='past_pairs.json'):
 
     return pairs
 
-if __name__ == "__main__":
+
+def main():
+    """The main executable function."""
     student_list = open(sys.argv[1]).readlines()
     cached_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'cached')
     cached_file = os.path.join(
@@ -59,3 +61,6 @@ if __name__ == "__main__":
         elif len(pair) == 3:
             output += "\t{}, {}, and {}\n".format(pair[0].strip(), pair[1].strip(), pair[2].strip())
     print(output)
+
+if __name__ == "__main__":
+    main()

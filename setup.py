@@ -9,5 +9,11 @@ setup(
         'test': ['pytest', 'pytest-cov'],
         'dev': ['ipython']
     },
-    package_dir={'': 'src'}
+    package_dir={'': 'src'},
+    py_modules=['creator'],
+    entry_points={
+        'console_scripts': [
+            "groups = creator:main"
+        ]
+    }
 )
