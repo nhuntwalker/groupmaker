@@ -37,8 +37,8 @@ def choose_pairs(student_list, past_pairs):
         if student not in assigned:
             try:
                 partner = max(choices[student], key=lambda s: len(past_pairs[s]))
-                pairs.append((student, partner))
-                assigned.update((student, partner))
+                new = (student, partner)
+                pairs.append(new)
                 past_pairs[student].append(partner)
                 past_pairs[partner].append(student)
             except ValueError:
@@ -53,7 +53,8 @@ def choose_pairs(student_list, past_pairs):
                 for s in best_pair:
                     past_pairs[s].append(student)
                 pairs[pairs.index(best_pair)] += (student,)
-                assigned.add(student)
+                new = (student,)
+            assigned.update(new)
             for x in new:
                 remove_all_traces(x, choices)
     return pairs, past_pairs
@@ -79,22 +80,22 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('list_file', type=str, help='.txt file listing individuals')
     parser.add_argument('-n', '--no-cache',
-                       help='create pairs ignoring cache',
-                       action='store_true')
+                        help='create pairs ignoring cache',
+                        action='store_true')
     parser.add_argument('-r', '--reset-cache',
-                       help='reset cache to data created by current run',
-                       action='store_true')
+                        help='reset cache to data created by current run',
+                        action='store_true')
     args = parser.parse_args()
 
     student_list = [line.rstrip() for line in open(args.list_file)]
+    cached_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'cached')
+    cached_file = os.path.join(
+        cached_dir,
+        os.path.splitext(os.path.split(args.list_file)[-1])[0] + '.json'
+    )
     if args.no_cache:
         past_pairs = defaultdict(list)
     else:
-        cached_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'cached')
-        cached_file = os.path.join(
-            cached_dir,
-            os.path.splitext(os.path.split(args.list_file)[-1])[0] + '.json'
-        )
         past_pairs = get_past_pairs(cached_file)
     pairs, past_pairs = choose_pairs(student_list, past_pairs)
     if args.reset_cache:
