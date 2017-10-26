@@ -6,14 +6,15 @@ setup(
     author='Nicholas Hunt-Walker, Ford Fowler',
     author_email='nhuntwalker@gmail.com',
     extras_require={
-        'test': ['pytest', 'pytest-cov'],
+        'test': ['pytest', 'pytest-cov', 'faker'],
         'dev': ['ipython']
     },
     package_dir={'': 'src'},
-    py_modules=['creator'],
+    py_modules=['creator', 'helpers'],
     entry_points={
         'console_scripts': [
-            "groups = creator:main"
+            "groups = creator:main",
+            "drop = creator:drop_student"
         ]
     }
 )
