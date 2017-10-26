@@ -37,9 +37,8 @@ def choose_pairs(student_list, past_pairs):
         if student not in assigned:
             try:
                 partner = max(choices[student], key=lambda s: len(past_pairs[s]))
-                new = (student, partner)
-                pairs.append(new)
-                assigned.update(new)
+                pairs.append((student, partner))
+                assigned.update((student, partner))
                 past_pairs[student].append(partner)
                 past_pairs[partner].append(student)
             except ValueError:
@@ -55,10 +54,8 @@ def choose_pairs(student_list, past_pairs):
                     past_pairs[s].append(student)
                 pairs[pairs.index(best_pair)] += (student,)
                 assigned.add(student)
-                new = (student,)
             for x in new:
                 remove_all_traces(x, choices)
-
     return pairs, past_pairs
 
 
@@ -81,11 +78,10 @@ def main():
     """The main executable function."""
     parser = argparse.ArgumentParser()
     parser.add_argument('list_file', type=str, help='.txt file listing individuals')
-    group = parser.add_mutually_exclusive_group()
-    group.add_argument('-n', '--no-cache',
+    parser.add_argument('-n', '--no-cache',
                        help='create pairs ignoring cache',
                        action='store_true')
-    group.add_argument('-r', '--reset-cache',
+    parser.add_argument('-r', '--reset-cache',
                        help='reset cache to data created by current run',
                        action='store_true')
     args = parser.parse_args()
@@ -103,7 +99,7 @@ def main():
     pairs, past_pairs = choose_pairs(student_list, past_pairs)
     if args.reset_cache:
         past_pairs = create_past_pairs(pairs)
-    if not args.no_cache:
+    if not args.no_cache or (args.reset_cache and args.no_cache):
         write_past_pairs(past_pairs, cached_file)
 
     output = "Groups:\n"
