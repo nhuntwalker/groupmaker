@@ -1,12 +1,5 @@
 """Helpers to the pair creator."""
-import os
 import json
-
-
-def clear_cache(path='past_pairs.json'):
-    """Remove past pair history."""
-    if os.path.exists(path):
-        os.remove(path)
 
 
 def remove_all_traces(name, dictionary, remove_key=False):
@@ -20,7 +13,7 @@ def remove_all_traces(name, dictionary, remove_key=False):
             pass
 
 
-def drop_student(name, path='past_pairs.json'):
+def remove_from_cache(name, path):
     """Remove a student from the cache."""
     with open(path) as f:
         past_pairs = json.load(f)

@@ -74,7 +74,6 @@ def drop_student():
     parser.add_argument('name', type=str)
     parser.add_argument('cachepath', type=str)
     args = parser.parse_args()
-    print(args)
     remove_from_cache(args.name, args.cachepath)
 
 
